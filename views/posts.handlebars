@@ -1,0 +1,32 @@
+<h2>
+	Welcome back {{username}}
+</h2>
+
+<form id="post-tweet">
+	What's on your mind?<input id="body" /><br />
+	<input type="submit" value="Post!" />
+</form>
+
+{{#each posts as |posts|}}
+{{> post}}
+{{/each}}
+
+<script>
+	document.getElementById('post-tweet').addEventListener('submit', (event) => {
+		event.preventDefault();
+
+		fetch('/posts', {
+			method: 'POST', // or 'PUT'
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				body: document.getElementById('body').value
+			}),
+		}).then(res => {
+			if (res.ok) {
+				window.location.replace('/posts');
+			}
+		});
+	})
+</script>
